@@ -1,4 +1,3 @@
-
 const TimersDashboard = React.createClass({
     render: function() {
         return (
@@ -13,3 +12,4 @@ const TimersDashboard = React.createClass({
         );
     },
 });
+

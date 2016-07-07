@@ -58,6 +58,24 @@ const EditableTimer = React.createClass({
     },
 });
 
+const ToggleableTimerForm = React.createClass({
+    render: function() {
+        if (this.props.isOpen) {
+            return (
+                <TimerForm />
+            );
+        } else {
+            return (
+                <div className='ui basic content center aligned segment'>
+                    <button className='ui basic button icon'>
+                        <i className='plus icon'></i>
+                    </button>
+                </div>
+            );
+        }
+    }
+});
+
 const TimerForm = React.createClass({
     render: function() {
         const submitText = this.props.title ? 'Update' : 'Create';

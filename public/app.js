@@ -24,7 +24,7 @@ const EditableTimerList = React.createClass({
                     runningSince={null}
                     editFormOpen={false}
                 />
-                <EditableTimerList
+                <EditableTimer
                     title='Learn Angular 2'
                     project='Build chat application'
                     elapsed='3890985'
@@ -139,3 +139,8 @@ const Timer = React.createClass({
         );
     },
 });
+
+ReactDOM.render(
+    <TimersDashboard />,
+    document.getElementById('content')
+);

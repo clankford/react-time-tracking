@@ -35,22 +35,21 @@ const TimersDashboard = React.createClass({
 
 const EditableTimerList = React.createClass({
     render: function() {
+        const timers = this.props.timers.map((timer) => {
+            return (
+                <EditableTimer
+                    key={timer.id}
+                    id={timer.id}
+                    title={timer.title}
+                    project={timer.project}
+                    elapsed={timer.elapsed}
+                    runningSince={timer.runningSince}
+                />
+            );
+        });
         return (
             <div id='timers'>
-                <EditableTimer
-                    title='Learn React'
-                    project='Build timer application'
-                    elapsed='8986300'
-                    runningSince={null}
-                    editFormOpen={false}
-                />
-                <EditableTimer
-                    title='Learn Angular 2'
-                    project='Build chat application'
-                    elapsed='3890985'
-                    runningSince={null}
-                    editFormOpen={true}
-                />
+                {timers}
             </div>
         );
     },

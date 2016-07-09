@@ -95,10 +95,20 @@ const ToggleableTimerForm = React.createClass({
     handleFormOpen: function() {
         this.setState({ isOpen: true });
     },
+    handleFormClose: function() {
+        this.setState({ isOpen: false });
+    },
+    handleFromSubmit: function(timer) {
+        this.props.onFormSubmit(timer);
+        this.setState({ isOpen: false });
+    },
     render: function() {
         if (this.state.isOpen) {
             return (
-                <TimerForm />
+                <TimerForm 
+                    onFormSubmit={this.handleFromSubmit}
+                    onFormClose={this.handleFormClose}
+                />
             );
         } else {
             return (

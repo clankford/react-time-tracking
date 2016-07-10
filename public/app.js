@@ -74,6 +74,16 @@ const EditableTimer = React.createClass({
             }
         );
     },
+    handleEditClick: function() {
+        this.openForm();
+    },
+    handleFormClose: function() {
+        this.closeForm();
+    },
+    handleSubmit: function(timer) {
+        this.props.onFormSubmit(timer);
+        this.closeForm();
+    },
     render: function() {
         if (this.state.editFormOpen) {
             return (
@@ -81,6 +91,8 @@ const EditableTimer = React.createClass({
                     id={this.props.id}
                     title={this.props.title}
                     project={this.props.project}
+                    onFormSubmit={this.handleSubmit}
+                    onFormClose={this.handleFormClose}
                 />
             );
         } else {
@@ -91,6 +103,7 @@ const EditableTimer = React.createClass({
                     project={this.props.project}
                     elapsed={this.props.elapsed}
                     runningSince={this.props.runningSince}
+                    onEditClick={this.handleEditClick}
                 />
             );
         }
@@ -197,7 +210,10 @@ const Timer = React.createClass({
                         </h2>
                     </div>
                     <div className='extra content'>
-                        <span className='right floated edit icon'>
+                        <span 
+                            className='right floated edit icon'
+                            onClick={this.props.onEditClick}
+                        >
                             <i className='edit icon'></i>
                         </span>
                         <span className='right floated trash icon'>

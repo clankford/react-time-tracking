@@ -22,10 +22,27 @@ const TimersDashboard = React.createClass({
     handleCreateFormSubmit: function(timer) {
         this.createTimer(timer);
     },
+    handleEditFormSubmit: function(attrs) {
+        this.updateTimer(attrs);
+    },
     createTimer: function(timer) {
         const t = helpers.newTimer(timer);
         this.setState({
             timers: this.state.timers.concat(t),
+        });
+    },
+    updateTimer: function(attrs) {
+        this.setState({
+            timers: this.state.timers.map((timer) => {
+                if (timer.id === attrs.id) {
+                    return Object.assign({}, timer, {
+                        title: attrs.title,
+                        project: attrs.project,
+                    });
+                } else {
+                    return timer;
+                }
+            }),
         });
     },
     render: function() {
@@ -34,6 +51,7 @@ const TimersDashboard = React.createClass({
                 <div className='column'>
                     <EditableTimerList 
                         timers={this.state.timers}
+                        onFormSubmit={this.handleEditFormSubmit}
                     />
                     <ToggleableTimerForm 
                         onFormSubmit={this.handleCreateFormSubmit}
@@ -55,6 +73,7 @@ const EditableTimerList = React.createClass({
                     project={timer.project}
                     elapsed={timer.elapsed}
                     runningSince={timer.runningSince}
+                    onFormSubmit={this.props.onFormSubmit}
                 />
             );
         });
@@ -83,6 +102,12 @@ const EditableTimer = React.createClass({
     handleSubmit: function(timer) {
         this.props.onFormSubmit(timer);
         this.closeForm();
+    },
+    openForm: function() {
+        this.setState({ editFormOpen: true });
+    },
+    closeForm: function() {
+        this.setState({ editFormOpen: false });
     },
     render: function() {
         if (this.state.editFormOpen) {

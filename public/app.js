@@ -50,13 +50,7 @@ const TimersDashboard = React.createClass({
     },
     deleteTimer: function(attrs) {
         this.setState({
-            timers: this.state.timers.filter((timer) => {
-                if (!(timer.id === attrs.id)) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }),
+            timers: this.state.timers.filter((timer) => timer.id !== attrs.id),
         });
     },
     render: function() {
@@ -112,10 +106,6 @@ const EditableTimer = React.createClass({
     handleEditClick: function() {
         this.openForm();
     },
-    handleDeleteClick: function(timer) {
-        this.props.onTimerDelete(timer);
-        this.closeForm();
-    },
     handleFormClose: function() {
         this.closeForm();
     },
@@ -149,7 +139,7 @@ const EditableTimer = React.createClass({
                     elapsed={this.props.elapsed}
                     runningSince={this.props.runningSince}
                     onEditClick={this.handleEditClick}
-                    onDeleteClick={this.handleDeleteClick}
+                    onDeleteClick={this.props.onTimerDelete}
                 />
             );
         }

@@ -229,13 +229,21 @@ const TimerForm = React.createClass({
 });
 
 const Timer = React.createClass({
+    componentDidMount: function() {
+        this.forceUpdateInterval = setInterval(() => this.forceUpdate(), 50);
+    },
+    componentWillUnmount: function() {
+        clearInterval(this.forceUpdateInterval);
+    },
     handleDelete: function() {
         this.props.onDeleteClick({
             id: this.props.id
         });
     },
     render: function() {
-        const elapsedString = helpers.renderElapsedString(this.props.elapsed);
+        const elapsedString = helpers.renderElapsedString(
+            this.props.elapsed, this.props.runningSince
+        );
         return (
             <div className='ui centered card'>
                 <div className='content'>

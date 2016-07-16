@@ -8,6 +8,7 @@ const TimersDashboard = React.createClass({
                     id: uuid.v4(),
                     elapsed: 5456099,
                     runningSince: Date.now(),
+                    isOptionsVisible: false,
                 },
                 {
                     title: "Learn Angular 2",
@@ -15,6 +16,7 @@ const TimersDashboard = React.createClass({
                     id: uuid.v4(),
                     elapsed: 1273998,
                     runningSince: null,
+                    isOptionsVisible: false,
                 },
             ],
         };
@@ -31,8 +33,11 @@ const TimersDashboard = React.createClass({
     handleStartClick: function(timerId) {
         this.startTimer(timerId);
     },
-    handleStopClick: function(timerId) {
+    handleStopClick: function(ctimerId) {
         this.stopTimer(timerId);
+    },
+    handleToggleOptionsVisible: function(timerId) {
+        this.toggleOptionsVisible(timerId);
     },
     createTimer: function(timer) {
         const t = helpers.newTimer(timer);
@@ -91,6 +96,19 @@ const TimersDashboard = React.createClass({
             }),
         });
     },
+    toggleOptionsVisible: function(timerId) {
+        this.setState({
+            timers: this.state.timers.map((timer) => {
+                if (timer.id === timerId) {
+                    return Object.assign({}, timer, {
+                        isOptionsVisible: !(timer.isOptionsVisible)
+                    });
+                } else {
+                    return timer;
+                }
+            }),
+        });
+    },
     render: function() {
         return (
             <div className='ui three column centered grid'>
@@ -101,6 +119,8 @@ const TimersDashboard = React.createClass({
                         onTimerDelete={this.handleDeleteTimer}
                         onStartClick={this.handleStartClick}
                         onStopClick={this.handleStopClick}
+                        onMouseEnter={this.handleMouseEnter}
+                        toggleOptionsVisible={this.handleToggleOptionsVisible}
                     />
                     <ToggleableTimerForm 
                         onFormSubmit={this.handleCreateFormSubmit}
@@ -122,10 +142,12 @@ const EditableTimerList = React.createClass({
                     project={timer.project}
                     elapsed={timer.elapsed}
                     runningSince={timer.runningSince}
+                    isOptionsVisible={timer.isOptionsVisible}
                     onFormSubmit={this.props.onFormSubmit}
                     onTimerDelete={this.props.onTimerDelete}
                     onStartClick={this.props.onStartClick}
                     onStopClick={this.props.onStopClick}
+                    toggleOptionsVisible={this.props.toggleOptionsVisible}
                 />
             );
         });
@@ -180,10 +202,12 @@ const EditableTimer = React.createClass({
                     project={this.props.project}
                     elapsed={this.props.elapsed}
                     runningSince={this.props.runningSince}
+                    isOptionsVisible={this.props.isOptionsVisible}
                     onEditClick={this.handleEditClick}
                     onDeleteClick={this.props.onTimerDelete}
                     onStartClick={this.props.onStartClick}
                     onStopClick={this.props.onStopClick}
+                    toggleOptionsVisible={this.props.toggleOptionsVisible}
                 />
             );
         }
@@ -290,12 +314,15 @@ const Timer = React.createClass({
     handleStopClick: function() {
         this.props.onStopClick(this.props.id);
     },
+    handleToggleOnMouseEnter: function() {
+        this.props.toggleOptionsVisible(this.props.id);
+    },
     render: function() {
         const elapsedString = helpers.renderElapsedString(
             this.props.elapsed, this.props.runningSince
         );
         return (
-            <div className='ui centered card'>
+            <div onMouseEnter={this.handleToggleOnMouseEnter} onMouseLeave={this.handleToggleOnMouseEnter} className='ui centered card'>
                 <div className='content'>
                     <div className='header'>
                         {this.props.title}
@@ -313,13 +340,13 @@ const Timer = React.createClass({
                             className='right floated edit icon'
                             onClick={this.props.onEditClick}
                         >
-                            <i className='edit icon'></i>
+                            { this.props.isOptionsVisible ? <i className='edit icon'></i> : null }
                         </span>
                         <span 
                             className='right floated trash icon'
                             onClick={this.handleDelete}
                         >
-                            <i className='trash icon'></i>
+                            { this.props.isOptionsVisible ? <i className='trash icon'></i> : null }
                         </span>
                     </div>
                 </div>

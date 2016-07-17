@@ -218,6 +218,7 @@ const ToggleableTimerForm = React.createClass({
     getInitialState: function() {
         return {
             isOpen: false,
+            isFormValid: true,
         };
     },
     handleFormOpen: function() {
@@ -227,13 +228,19 @@ const ToggleableTimerForm = React.createClass({
         this.setState({ isOpen: false });
     },
     handleFromSubmit: function(timer) {
-        this.props.onFormSubmit(timer);
-        this.setState({ isOpen: false });
+        if (timer.title && timer.project)
+        {
+            this.props.onFormSubmit(timer);
+            this.setState({ isOpen: false, isFormValid: true });
+        } else {
+            this.setState({ isFormValid: false });
+        }
     },
     render: function() {
         if (this.state.isOpen) {
             return (
                 <TimerForm 
+                    isFormValid={this.state.isFormValid}
                     onFormSubmit={this.handleFromSubmit}
                     onFormClose={this.handleFormClose}
                 />
@@ -275,6 +282,7 @@ const TimerForm = React.createClass({
                             <label>Project</label>
                             <input type='text' ref='project' defaultValue={this.props.project} />
                         </div>
+                        { this.props.isFormValid ? null : <div class="ui error message">All fields are required!</div> }
                         <div className='ui two bottom attached buttons'>
                             <button 
                                 className='ui basic blue button'

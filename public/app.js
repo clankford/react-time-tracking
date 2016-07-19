@@ -1,7 +1,7 @@
 const TimersDashboard = React.createClass({
     getInitialState: function() {
         return {
-            data: [],
+            timers: [],
         };
     },
     componentDidMount: function() {
@@ -11,7 +11,7 @@ const TimersDashboard = React.createClass({
     loadTimersFromServer: function() {
         client.getTimers({
             success: (data) => {
-                this.setState({data: data});
+                this.setState({timers: data});
             },
         });
     },

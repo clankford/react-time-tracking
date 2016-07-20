@@ -38,6 +38,10 @@ const TimersDashboard = React.createClass({
         this.setState({
             timers: this.state.timers.concat(t),
         });
+        
+        client.createTimer({
+            data: timer,
+        });
     },
     updateTimer: function(attrs) {
         this.setState({
@@ -264,8 +268,9 @@ const ToggleableTimerForm = React.createClass({
 
 const TimerForm = React.createClass({
     handleSubmit: function() {
+        let id = this.props.id ? this.props.id : uuid();
         this.props.onFormSubmit({
-            id: this.props.id,
+            id: id,
             title: this.refs.title.value,
             project: this.refs.project.value
         });

@@ -170,6 +170,7 @@ const EditableTimer = React.createClass({
         return (
             {
                 editFormOpen: false,
+                isFormValid: true,
             }
         );
     },
@@ -196,8 +197,10 @@ const EditableTimer = React.createClass({
                     id={this.props.id}
                     title={this.props.title}
                     project={this.props.project}
+                    isFormValid={this.state.isFormValid}
                     onFormSubmit={this.handleSubmit}
                     onFormClose={this.handleFormClose}
+                    
                 />
             );
         } else {

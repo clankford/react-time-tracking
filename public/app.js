@@ -340,8 +340,8 @@ const Timer = React.createClass({
             this.props.elapsed, this.props.runningSince
         );
         return (
-            <div onMouseEnter={this.handleToggleOnMouseEnter} onMouseLeave={this.handleToggleOnMouseEnter} className='ui centered card'>
-                <div className='content'>
+            <div className='ui centered card'>
+                <div onMouseEnter={this.handleToggleOnMouseEnter} onMouseLeave={this.handleToggleOnMouseEnter} className='content'>
                     <div className='header'>
                         {this.props.title}
                     </div>

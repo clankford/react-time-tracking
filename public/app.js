@@ -56,6 +56,10 @@ const TimersDashboard = React.createClass({
                 }
             }),
         });
+        
+        client.updateTimer({
+            data: attrs,
+        });
     },
     deleteTimer: function(attrs) {
         this.setState({

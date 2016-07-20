@@ -63,7 +63,7 @@ const TimersDashboard = React.createClass({
         
         this.setState({
             timers: this.state.timers.map((timer) => {
-                if (timer.id ===timerId) {
+                if (timer.id === timerId) {
                     return Object.assign({}, timer, {
                         runningSince: now,
                     });
@@ -71,6 +71,10 @@ const TimersDashboard = React.createClass({
                     return timer;
                 }
             }),
+        });
+        
+        client.startTimer({
+            data: { id: timerId, start: now },
         });
     },
     stopTimer: function(timerId) {
@@ -88,6 +92,10 @@ const TimersDashboard = React.createClass({
                     return timer;
                 }
             }),
+        });
+        
+        client.stopTimer({
+            data: { id: timerId, stop: now },
         });
     },
     toggleOptionsVisible: function(timerId) {

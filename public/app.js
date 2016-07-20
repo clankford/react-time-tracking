@@ -30,8 +30,8 @@ const TimersDashboard = React.createClass({
     handleStopClick: function(ctimerId) {
         this.stopTimer(timerId);
     },
-    handleToggleOptionsVisible: function(timerId) {
-        this.toggleOptionsVisible(timerId);
+    handleToggleOptionsVisible: function(timerId, isVisible) {
+        this.toggleOptionsVisible(timerId, isVisible);
     },
     createTimer: function(timer) {
         const t = helpers.newTimer(timer);
@@ -64,6 +64,10 @@ const TimersDashboard = React.createClass({
     deleteTimer: function(attrs) {
         this.setState({
             timers: this.state.timers.filter((timer) => timer.id !== attrs.id),
+        });
+        
+        client.deleteTimer({
+            data: attrs,
         });
     },
     startTimer: function(timerId) {
@@ -106,12 +110,12 @@ const TimersDashboard = React.createClass({
             data: { id: timerId, stop: now },
         });
     },
-    toggleOptionsVisible: function(timerId) {
+    toggleOptionsVisible: function(timerId, isVisible) {
         this.setState({
             timers: this.state.timers.map((timer) => {
                 if (timer.id === timerId) {
                     return Object.assign({}, timer, {
-                        isOptionsVisible: !(timer.isOptionsVisible)
+                        isOptionsVisible: isVisible
                     });
                 } else {
                     return timer;
@@ -337,7 +341,10 @@ const Timer = React.createClass({
         this.props.onStopClick(this.props.id);
     },
     handleToggleOnMouseEnter: function() {
-        this.props.toggleOptionsVisible(this.props.id);
+        this.props.toggleOptionsVisible(this.props.id, true);
+    },
+    handleToggleOnMouseLeave: function() {
+        this.props.toggleOptionsVisible(this.props.id, false);
     },
     render: function() {
         const elapsedString = helpers.renderElapsedString(
@@ -345,7 +352,7 @@ const Timer = React.createClass({
         );
         return (
             <div className='ui centered card'>
-                <div onMouseEnter={this.handleToggleOnMouseEnter} onMouseLeave={this.handleToggleOnMouseEnter} className='content'>
+                <div onMouseEnter={this.handleToggleOnMouseEnter} onMouseLeave={this.handleToggleOnMouseLeave} className='content'>
                     <div className='header'>
                         {this.props.title}
                     </div>

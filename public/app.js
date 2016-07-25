@@ -314,7 +314,7 @@ const TimerForm = React.createClass({
         return (
             <div className='ui centered card'>
                 <div className='content'>
-                    <div className='ui form'>
+                    <div className='ui form error'>
                         <div className='field'>
                             <label>Title</label>
                             <input type='text' ref='title' defaultValue={this.props.title} />
@@ -323,8 +323,8 @@ const TimerForm = React.createClass({
                             <label>Project</label>
                             <input type='text' ref='project' defaultValue={this.props.project} />
                         </div>
-                        { this.props.isFormValid ? null : <div className=''>All fields are required!</div> }
-                        { this.props.fieldErrors ? <div className=''> There was a server error. This form did not submit.</div> : null }
+                        { this.props.isFormValid ? null : <div className='ui error message'>All fields are required!</div> }
+                        { (this.props.fieldErrors && (this.props.fieldErrors === this.props.id)) ? <div className='ui error message'> There was a server error. This form did not submit.</div> : null }
                         <div className='ui two bottom attached buttons'>
                             <button 
                                 className='ui basic blue button'

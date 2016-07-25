@@ -143,8 +143,8 @@ const TimersDashboard = React.createClass({
     render: function() {
         return (
             <div className='ui three column centered grid'>
-                { this.state.isError ? <b>There was an error on the server.</b> : null }
                 <div className='column'>
+                    { this.state.isError ? <div className='ui red center aligned segment'><b>There was an error on the server.</b></div> : null }
                     <EditableTimerList 
                         timers={this.state.timers}
                         fieldErrors={this.state.fieldErrors}
@@ -323,8 +323,8 @@ const TimerForm = React.createClass({
                             <label>Project</label>
                             <input type='text' ref='project' defaultValue={this.props.project} />
                         </div>
-                        { this.props.isFormValid ? null : <div class="ui error message">All fields are required!</div> }
-                        { this.props.fieldErrors ? <div class="ui error message"> There was a server error. This form did not submit.</div> : null }
+                        { this.props.isFormValid ? null : <div className=''>All fields are required!</div> }
+                        { this.props.fieldErrors ? <div className=''> There was a server error. This form did not submit.</div> : null }
                         <div className='ui two bottom attached buttons'>
                             <button 
                                 className='ui basic blue button'

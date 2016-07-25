@@ -3,11 +3,12 @@ const TimersDashboard = React.createClass({
         return {
             timers: [],
             isError: false,
+            fieldErrors: null,
         };
     },
     componentDidMount: function() {
         this.loadTimersFromServer();
-        setInterval(this.loadTimersFromServer, 5000);
+        //setInterval(this.loadTimersFromServer, 5000);
     },
     loadTimersFromServer: function() {
         client.getTimers({
@@ -31,7 +32,7 @@ const TimersDashboard = React.createClass({
     handleStartClick: function(timerId) {
         this.startTimer(timerId);
     },
-    handleStopClick: function(ctimerId) {
+    handleStopClick: function(timerId) {
         this.stopTimer(timerId);
     },
     handleToggleOptionsVisible: function(timerId, isVisible) {
@@ -46,7 +47,7 @@ const TimersDashboard = React.createClass({
         client.createTimer({
             data: timer,
             error: () => {
-                this.setState({isError: true});
+                this.setState({fieldErrors: t.id});
             },
         });
     },
@@ -67,7 +68,7 @@ const TimersDashboard = React.createClass({
         client.updateTimer({
             data: attrs,
             error: () => {
-                this.setState({isError: true});
+                this.setState({fieldErrors: attrs.id});
             },
         });
     },
@@ -146,6 +147,7 @@ const TimersDashboard = React.createClass({
                 <div className='column'>
                     <EditableTimerList 
                         timers={this.state.timers}
+                        fieldErrors={this.state.fieldErrors}
                         onFormSubmit={this.handleEditFormSubmit}
                         onTimerDelete={this.handleDeleteTimer}
                         onStartClick={this.handleStartClick}
@@ -155,6 +157,7 @@ const TimersDashboard = React.createClass({
                     />
                     <ToggleableTimerForm 
                         onFormSubmit={this.handleCreateFormSubmit}
+                        fieldErrors={this.state.fieldErrors}
                     />
                 </div>
             </div>
@@ -174,6 +177,7 @@ const EditableTimerList = React.createClass({
                     elapsed={timer.elapsed}
                     runningSince={timer.runningSince}
                     isOptionsVisible={timer.isOptionsVisible}
+                    fieldErrors={this.props.fieldErrors}
                     onFormSubmit={this.props.onFormSubmit}
                     onTimerDelete={this.props.onTimerDelete}
                     onStartClick={this.props.onStartClick}
@@ -216,13 +220,14 @@ const EditableTimer = React.createClass({
         this.setState({ editFormOpen: false });
     },
     render: function() {
-        if (this.state.editFormOpen) {
+        if (this.state.editFormOpen || this.props.fieldErrors === this.props.id) {
             return (
                 <TimerForm
                     id={this.props.id}
                     title={this.props.title}
                     project={this.props.project}
                     isFormValid={this.state.isFormValid}
+                    fieldErrors={this.props.fieldErrors}
                     onFormSubmit={this.handleSubmit}
                     onFormClose={this.handleFormClose}
                     
@@ -275,6 +280,7 @@ const ToggleableTimerForm = React.createClass({
             return (
                 <TimerForm 
                     isFormValid={this.state.isFormValid}
+                    fieldErrors={this.props.fieldErrors}
                     onFormSubmit={this.handleFromSubmit}
                     onFormClose={this.handleFormClose}
                 />
@@ -318,6 +324,7 @@ const TimerForm = React.createClass({
                             <input type='text' ref='project' defaultValue={this.props.project} />
                         </div>
                         { this.props.isFormValid ? null : <div class="ui error message">All fields are required!</div> }
+                        { this.props.fieldErrors ? <div class="ui error message"> There was a server error. This form did not submit.</div> : null }
                         <div className='ui two bottom attached buttons'>
                             <button 
                                 className='ui basic blue button'

@@ -7,9 +7,7 @@ window.client = (function () {
       dataType: 'json',
       cache: false,
       success: opts.success,
-      error: function (xhr, status, err) {
-        console.error('GET /api/timers', status, err.toString()); // eslint-disable-line no-console
-      },
+      error: opts.error,
     });
   }
 
@@ -21,9 +19,7 @@ window.client = (function () {
       dataType: 'json',
       cache: false,
       success: opts.success,
-      error: function (xhr, status, err) {
-        console.error('POST /api/timers', status, err.toString()); // eslint-disable-line no-console
-      },
+      error: opts.error,
     });
   }
 
@@ -35,9 +31,7 @@ window.client = (function () {
       dataType: 'json',
       cache: false,
       success: opts.success,
-      error: function (xhr, status, err) {
-        console.error('PUT /api/timers', status, err.toString()); // eslint-disable-line no-console
-      },
+      error: opts.error,
     });
   }
 
@@ -49,9 +43,7 @@ window.client = (function () {
       dataType: 'json',
       cache: false,
       success: opts.success,
-      error: function (xhr, status, err) {
-        console.error('POST /api/timers/start', status, err.toString()); // eslint-disable-line no-console
-      },
+      error: opts.error,
     });
   }
 
@@ -63,9 +55,7 @@ window.client = (function () {
       dataType: 'json',
       cache: false,
       success: opts.success,
-      error: function (xhr, status, err) {
-        console.error('POST /api/timers/stop', status, err.toString()); // eslint-disable-line no-console
-      },
+      error: opts.error,
     });
   }
 
@@ -77,9 +67,7 @@ window.client = (function () {
       dataType: 'json',
       cache: false,
       success: opts.success,
-      error: function (xhr, status, err) {
-        console.error('DELETE /api/timers', status, err.toString()); // eslint-disable-line no-console
-      },
+      error: opts.error,
     });
   }
 

@@ -2,6 +2,7 @@ const TimersDashboard = React.createClass({
     getInitialState: function() {
         return {
             timers: [],
+            isError: false,
         };
     },
     componentDidMount: function() {
@@ -12,6 +13,9 @@ const TimersDashboard = React.createClass({
         client.getTimers({
             success: (data) => {
                 this.setState({timers: data});
+            },
+            error: () => {
+                this.setState({isError: true});
             },
         });
     },
@@ -41,6 +45,9 @@ const TimersDashboard = React.createClass({
         
         client.createTimer({
             data: timer,
+            error: () => {
+                this.setState({isError: true});
+            },
         });
     },
     updateTimer: function(attrs) {
@@ -59,6 +66,9 @@ const TimersDashboard = React.createClass({
         
         client.updateTimer({
             data: attrs,
+            error: () => {
+                this.setState({isError: true});
+            },
         });
     },
     deleteTimer: function(attrs) {
@@ -87,6 +97,9 @@ const TimersDashboard = React.createClass({
         
         client.startTimer({
             data: { id: timerId, start: now },
+            error: () => {
+                this.setState({isError: true});
+            },
         });
     },
     stopTimer: function(timerId) {
@@ -108,6 +121,9 @@ const TimersDashboard = React.createClass({
         
         client.stopTimer({
             data: { id: timerId, stop: now },
+            error: () => {
+                this.setState({isError: true});
+            },
         });
     },
     toggleOptionsVisible: function(timerId, isVisible) {
@@ -126,6 +142,7 @@ const TimersDashboard = React.createClass({
     render: function() {
         return (
             <div className='ui three column centered grid'>
+                { this.state.isError ? <b>There was an error on the server.</b> : null }
                 <div className='column'>
                     <EditableTimerList 
                         timers={this.state.timers}

@@ -1,3 +1,5 @@
+// Top level component, manages state for the timers and errors. 
+// Children: EditableTimerList, ToggleableTimerForm
 const TimersDashboard = React.createClass({
     getInitialState: function() {
         return {
@@ -8,7 +10,7 @@ const TimersDashboard = React.createClass({
     },
     componentDidMount: function() {
         this.loadTimersFromServer();
-        //setInterval(this.loadTimersFromServer, 5000);
+        setInterval(this.loadTimersFromServer, 5000);
     },
     loadTimersFromServer: function() {
         client.getTimers({
@@ -165,6 +167,8 @@ const TimersDashboard = React.createClass({
     },
 });
 
+// List of timers, doesn't manage any state.
+// Children: EditableTimer
 const EditableTimerList = React.createClass({
     render: function() {
         const timers = this.props.timers.map((timer) => {
@@ -194,6 +198,8 @@ const EditableTimerList = React.createClass({
     },
 });
 
+// Individual timer that can be edited. manages validation state and open/closed state
+// Children: TimerForm, Timer
 const EditableTimer = React.createClass({
     getInitialState: function() {
         return (
@@ -253,6 +259,8 @@ const EditableTimer = React.createClass({
     },
 });
 
+// Component to drive whether to show a plus button or a new timer form, manages state for form validation and if the form is open or closed.
+// Children: TimerForm
 const ToggleableTimerForm = React.createClass({
     getInitialState: function() {
         return {
@@ -300,6 +308,8 @@ const ToggleableTimerForm = React.createClass({
     }
 });
 
+// Form to edit and create a timer depending on if there is an ID assigned already.
+// Children: None
 const TimerForm = React.createClass({
     handleSubmit: function() {
         let id = this.props.id ? this.props.id : uuid();
@@ -346,6 +356,8 @@ const TimerForm = React.createClass({
     },
 });
 
+// The timer itself, with edit and delete controls.
+// Children: TimerActionButton
 const Timer = React.createClass({
     componentDidMount: function() {
         this.forceUpdateInterval = setInterval(() => this.forceUpdate(), 50);
@@ -415,6 +427,8 @@ const Timer = React.createClass({
     },
 });
 
+// Buttons to control the timer running status.
+// Children: None
 const TimerActionButton = React.createClass({
     render: function() {
         if (this.props.timerIsRunning) {

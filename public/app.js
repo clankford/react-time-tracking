@@ -453,6 +453,7 @@ const TimerActionButton = React.createClass({
     },
 });
 
+// Attach TimerDashboard component to HTML element in index.html.
 ReactDOM.render(
     <TimersDashboard />,
     document.getElementById('content')

@@ -10,13 +10,16 @@ const TimersDashboard = React.createClass({
     },
     componentDidMount: function() {
         this.loadTimersFromServer();
+        // Refresh the timers from the server every 5 seconds.
         setInterval(this.loadTimersFromServer, 5000);
     },
     loadTimersFromServer: function() {
         client.getTimers({
+            // Set timer state upon successfully retreiving data.
             success: (data) => {
                 this.setState({timers: data});
             },
+            // Set error state upon recieving an error.
             error: () => {
                 this.setState({isError: true});
             },

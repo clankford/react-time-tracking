@@ -45,10 +45,12 @@ const TimersDashboard = React.createClass({
     },
     createTimer: function(timer) {
         const t = helpers.newTimer(timer);
+        // Set state locally first to give responsiveness.
         this.setState({
             timers: this.state.timers.concat(t),
         });
         
+        // Then communicate to server to create timer on the server.
         client.createTimer({
             data: timer,
             error: () => {
